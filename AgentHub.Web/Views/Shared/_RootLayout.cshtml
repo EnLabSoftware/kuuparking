@@ -1,0 +1,40 @@
+﻿@{ Layout = null; }
+
+<!DOCTYPE html>
+
+<html lang="False">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>@Html.Raw(ViewBag.Title)</title>
+    <meta name='description' content='@Html.Raw(ViewBag.PageDescription)'>
+    <meta name='keywords' content='@Html.Raw(ViewBag.Keywords)'>
+    <meta name='author' content='www.enterpriselab.net'>
+    <meta content='all' name='robots'>
+    <meta property="fb:app_id" content="1798180253737028" />
+    <meta property="og:url" content="https://www.kuuparking.com" />
+    <meta property="og:image" content="https://www.kuuparking.com/images/logo-blue-large.png" />
+    <meta property="og:title" content="@Html.Raw(ViewBag.OGTitle)" />
+    <meta property="og:description" content="@Html.Raw(ViewBag.OGDescription)" />
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0">
+    <link href='/Images/pin/user_location_icon_24.png' rel='shortcut icon' type='image/x-icon'>
+    <link href="/Content/font-awesome.min.css" rel="stylesheet" />
+
+    @RenderSection("HeaderContent", false)
+</head>
+<body>
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.6";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    @RenderBody()
+</body>
+</html>

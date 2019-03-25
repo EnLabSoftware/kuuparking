@@ -1,0 +1,95 @@
+﻿<div class="right-nav-layout loading-wrapper">
+    <div class="loading" ng-show="loading">
+        <div>
+            <md-progress-circular md-mode="indeterminate" ng-disable="!loading" md-diameter="200"></md-progress-circular>
+        </div>
+    </div>
+    <div class="content">
+        <div>
+            <h3>
+                Bãi đậu xe tại {{model.City ? model.City.Name + ', ' : ''}} {{model.State.Name}} ({{model.SlotProviders.length}})
+                <div class="fb-share-button" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuuparking.com%2F&amp;src=sdkpreparse">Chia sẻ</a></div>
+            </h3>
+            <md-list ng-show="!loading && model.SlotProviders && model.SlotProviders.length > 0">
+                <md-list-item ng-repeat="slotProvider in model.SlotProviders"
+                              ng-click="directTo(slotProvider)"
+                              ng-class="{ hovered : slotProvider.hovered, 'public' : slotProvider.IsPublic }">
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td>
+                                <a ng-href="/bai-dau-xe/thong-tin?id={{slotProvider.ID}}">
+                                    <div class="image" ng-class="{'no-image-bg': slotProvider.ThumbnailImageLocation }">
+                                        <div dynamic-background="" background-image="{{slotProvider.ThumbnailImageLocation}}"></div>
+                                    </div>
+                                </a>
+                            </td>
+                            <td style="width: 100%;">
+                                <div class="info">
+                                    <h4 class="address" style="margin: 0; line-height: 25px;">
+                                        <a ng-href="/bai-dau-xe/thong-tin?id={{slotProvider.ID}}">{{ slotProvider.Name }}</a>
+                                    </h4>
+                                    <div>
+                                        Địa chỉ: {{ slotProvider.Address.AddressLine }}
+                                    </div>
+                                    <div class="clearfix">
+                                        <div class="price">
+                                            Giá:
+                                            <span ng-hide="slotProvider.IsPublic">{{ slotProvider.Price | currency:"":0 }} <sup>₫</sup></span>
+                                            <span ng-show="slotProvider.IsPublic" style="color: #c12171;">Miễn phí</span>
+                                        </div>
+                                    </div>
+                                    <div ng-show="slotProvider.AvailableFromTime">
+                                        Giờ mở cửa: {{slotProvider.AvailableFromTime | date : "HH:mm"}} - {{slotProvider.AvailableToTime | date : "HH:mm"}}
+                                    </div>
+                                    <div class="icons clearfix">
+                                        <i class="pull-left icon-247" ng-show="slotProvider.IsOpen247">
+                                            <md-tooltip md-direction="top">Mở cửa 24/7</md-tooltip>
+                                        </i>
+                                        <i class="pull-left icon-weekend" ng-show="slotProvider.IsWeekendAvailable">
+                                            <md-tooltip md-direction="top">Mở cửa cuối tuần</md-tooltip>
+                                        </i>
+                                        <i class="pull-left icon-covered" ng-show="slotProvider.IsCoveredParking">
+                                            <md-tooltip md-direction="top">Có mái che</md-tooltip>
+                                        </i>
+                                        <i class="pull-left icon-overnight" ng-show="slotProvider.IsOvernightParking">
+                                            <md-tooltip md-direction="top">Đậu xe qua đêm</md-tooltip>
+                                        </i>
+                                        <i class="pull-left icon-bus" ng-show="slotProvider.IsBusParking">
+                                            <md-tooltip md-direction="top">Đậu được xe bus</md-tooltip>
+                                        </i>
+                                        <i class="pull-left icon-carwash" ng-show="slotProvider.IsCarWashingServiceAvailable">
+                                            <md-tooltip md-direction="top">Có dịch vụ rửa xe</md-tooltip>
+                                        </i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </md-list-item>
+            </md-list>
+
+            <div class="slot-not-found" ng-hide="loading || (model.SlotProviders && model.SlotProviders.length > 0)">
+                <div>Chúng tôi không tìm thấy bãi đậu xe nào quanh vị trí hiện tại.</div>
+                <div>
+                    Bạn có thể <a href="bai-dau-xe/dang-ky">đăng ký</a> bãi đậu xe của chính bạn.
+                </div>
+            </div>            
+        </div>
+    </div>
+    <div class="right-nav">
+        <div class="place-list">
+            <h3>Những thành phố khác</h3>
+            <md-list>
+                <md-list-item ng-repeat="p in model.ProvidersInState" ng-show="model.State.ID != p.StateID || model.City">
+                    <a ng-href="/bai-dau-xe?stateId={{p.StateID}}">{{p.Name}} ({{p.TotalSlotProviders}})</a>
+                </md-list-item>
+            </md-list>
+            <h3>Những quận/huyện trong {{model.State.Name}}</h3>
+            <md-list>
+                <md-list-item ng-repeat="c in model.Cities">
+                    <a ng-href="/bai-dau-xe?cityId={{c.ID}}">{{c.Name}}</a>
+                </md-list-item>
+            </md-list>
+        </div>
+    </div>
+</div>

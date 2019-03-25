@@ -1,0 +1,189 @@
+﻿<md-dialog aria-label="Thông tin bãi đổ xe" class="provider-details-dialog">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h5 class="two-lines" style="font-weight: normal; margin: 0;">{{ marker.provider.Name }}</h5>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close">
+                    <md-icon style="font-size: 16px">
+                        <i class="fa fa-close" aria-hidden="true"></i>
+                    </md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="info md-padding" layout="row">
+                <div class="image" dynamic-background="" background-image="{{ marker.provider.ThumbnailImageLocation }}"></div>
+                <div class="text" flex>
+                    <div class="address">
+                        Địa chỉ: {{ marker.provider.AddressLine }}
+                    </div>
+                    <div class="distance">
+                        Khoảng cách: {{ marker.distance.text }} - {{ marker.duration.text }}
+                    </div>
+                    <div ng-show="marker.provider.AvailableFromTime && marker.provider.AvailableToTime">
+                        Giờ mở cửa: {{ marker.provider.AvailableFromTime | date : 'h:m a' }} - {{ marker.provider.AvailableToTime | date : 'h:m a' }}
+                    </div>
+                    <div class="price">
+                        <div ng-show="marker.provider.IsPublic" style="font-size: 13px; color: #c12171;">
+                            Miễn phí
+                        </div>
+                        <div ng-hide="marker.provider.IsPublic">
+                            Giá: {{ marker.provider.Price | currency:"":0 }} <sup>₫</sup>
+                        </div>
+                    </div>
+                    <div class="clearfix current-direction-wrapper">
+                        <div ng-show="marker.direction" class="pull-left">
+                            Khoảng cách từ vị trí hiện tại: {{ marker.direction.distance.text }} - {{ marker.direction.duration.text }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Thông Tin">
+                    <md-content class="md-padding clearfix info-wrapper">
+                        <div ng-show="marker.provider.Description">
+                            <md-input-container style="width: 100%; padding: 0; margin:15px 0 0 0;">
+                                <label>Mô tả bãi đậu xe</label>
+                                <textarea ng-model="marker.provider.Description" readonly="readonly" style="border: none;"></textarea>
+                            </md-input-container>
+                        </div>
+                        <div class="icons">
+                            <div class="clearfix" ng-show="marker.provider.IsOpen247">
+                                <i class="icon-247"></i>
+                                Mở cửa 24/7
+                            </div>
+                            <div class="clearfix" ng-show="marker.provider.IsWeekendAvailable">
+                                <i class="icon-weekend"></i>
+                                Mở cửa cuối tuần
+                            </div>
+                            <div class="clearfix" ng-show="marker.provider.IsCoveredParking">
+                                <i class="icon-covered"></i>
+                                Có mái che
+                            </div>
+                            <div class="clearfix" ng-show="marker.provider.IsOvernightParking">
+                                <i class="icon-overnight"></i>
+                                Đậu xe qua đêm
+                            </div>
+                            <div class="clearfix" ng-show="marker.provider.IsBusParking">
+                                <i class="icon-bus"></i>
+                                Đậu được xe bus
+                            </div>
+                            <div class="clearfix" ng-show="marker.provider.IsCarWashingServiceAvailable">
+                                <i class="icon-carwash"></i>
+                                Có dịch vụ rửa xe
+                            </div>
+                        </div>
+                        <div class="images">
+                            <ul rn-carousel rn-carousel-auto-slide rn-carousel-pause-on-hover rn-carousel-index="marker.provider.carouselIndex">
+                                <li ng-repeat="slide in marker.provider.slides track by slide.id">
+                                    <div dynamic-background="" background-image="{{ slide.url }}"></div>
+                                </li>
+                            </ul>
+                            <div class="rn-carousel-indicator custom-indicator" style="text-align: center; padding: 3px 0; font-size: 1.2em;">
+                                <span ng-repeat="slide in marker.provider.slides"
+                                      ng-class="{active: $index==$parent.marker.provider.carouselIndex}"
+                                      ng-click="$parent.marker.provider.carouselIndex = $index">
+                                    <i class="fa fa-fw fa-circle"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Giờ Đậu Xe">
+                    <md-content class="md-padding">
+                        <div style="text-align: center" ng-show="marker.provider.IsOpen247">
+                            <h3>Mở cửa 24 giờ/ngày</h3>
+                        </div>
+                        <table style="width: 100%;" ng-hide="marker.provider.IsOpen247">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th style="text-align: left;">Mở cửa</th>
+                                    <th style="text-align: left;">Đóng cửa</th>
+                                    <th style="text-align: left;">Ghi chú</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-class="{'in-active' : !marker.provider.IsMondayAvailable}">
+                                    <td>Thứ Hai</td>
+                                    <td>{{marker.provider.MondayOpenTime}}</td>
+                                    <td>{{marker.provider.MondayClosedTime}}</td>
+                                    <td>
+                                        <i class="fa fa-fw fa-low-vision" ng-hide="marker.provider.IsMondayAvailable"></i>
+                                        <i class="fa fa-fw fa-check-square-o" ng-show="marker.provider.IsMondayAvailable"></i>
+                                    </td>
+                                </tr>
+                                <tr ng-class="{'in-active' : !marker.provider.IsTuesdayAvailable}">
+                                    <td>Thứ Ba</td>
+                                    <td>{{marker.provider.TuesdayOpenTime}}</td>
+                                    <td>{{marker.provider.TuesdayClosedTime}}</td>
+                                    <td>
+                                        <i class="fa fa-fw fa-low-vision" ng-hide="marker.provider.IsTuesdayAvailable"></i>
+                                        <i class="fa fa-fw fa-check-square-o" ng-show="marker.provider.IsTuesdayAvailable"></i>
+                                    </td>
+                                </tr>
+                                <tr ng-class="{'in-active' : !marker.provider.IsWednesdayAvailable}">
+                                    <td>Thứ Tư</td>
+                                    <td>{{marker.provider.WednesdayOpenTime}}</td>
+                                    <td>{{marker.provider.WednesdayClosedTime}}</td>
+                                    <td>
+                                        <i class="fa fa-fw fa-low-vision" ng-hide="marker.provider.IsWednesdayAvailable"></i>
+                                        <i class="fa fa-fw fa-check-square-o" ng-show="marker.provider.IsWednesdayAvailable"></i>
+                                    </td>
+                                </tr>
+                                <tr ng-class="{'in-active' : !marker.provider.IsThursdayAvailable}">
+                                    <td>Thứ Nắm</td>
+                                    <td>{{marker.provider.ThursdayOpenTime}}</td>
+                                    <td>{{marker.provider.ThursdayClosedTime}}</td>
+                                    <td>
+                                        <i class="fa fa-fw fa-low-vision" ng-hide="marker.provider.IsThursdayAvailable"></i>
+                                        <i class="fa fa-fw fa-check-square-o" ng-show="marker.provider.IsThursdayAvailable"></i>
+                                    </td>
+                                </tr>
+                                <tr ng-class="{'in-active' : !marker.provider.IsFridayAvailable}">
+                                    <td>Thứ Sáu</td>
+                                    <td>{{marker.provider.FridayOpenTime}}</td>
+                                    <td>{{marker.provider.FridayClosedTime}}</td>
+                                    <td>
+                                        <i class="fa fa-fw fa-low-vision" ng-hide="marker.provider.IsFridayAvailable"></i>
+                                        <i class="fa fa-fw fa-check-square-o" ng-show="marker.provider.IsFridayAvailable"></i>
+                                    </td>
+                                </tr>
+                                <tr ng-class="{'in-active' : !marker.provider.IsSaturdayAvailable}">
+                                    <td>Thứ Bảy</td>
+                                    <td>{{marker.provider.SaturdayOpenTime}}</td>
+                                    <td>{{marker.provider.SaturdayClosedTime}}</td>
+                                    <td>
+                                        <i class="fa fa-fw fa-low-vision" ng-hide="marker.provider.IsSaturdayAvailable"></i>
+                                        <i class="fa fa-fw fa-check-square-o" ng-show="marker.provider.IsSaturdayAvailable"></i>
+                                    </td>
+                                </tr>
+                                <tr ng-class="{'in-active' : !marker.provider.IsSundayAvailable}">
+                                    <td>Chủ Nhật</td>
+                                    <td>{{marker.provider.SundayOpenTime}}</td>
+                                    <td>{{marker.provider.SundayClosedTime}}</td>
+                                    <td>
+                                        <i class="fa fa-fw fa-low-vision" ng-hide="marker.provider.IsSundayAvailable"></i>
+                                        <i class="fa fa-fw fa-check-square-o" ng-show="marker.provider.IsSundayAvailable"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="getDirection()" md-autofocus>
+                <i class="fa fa-fw fa-hand-o-right" aria-hidden="true"></i> Chỉ đường
+            </md-button>
+            <span flex></span>
+            <!--<md-button ng-click="call()">
+                    <i class="fa fa-fw fa-phone" aria-hidden="true"></i> Gọi điện
+                </md-button>-->
+            <md-button ng-click="cancel()">Đóng</md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

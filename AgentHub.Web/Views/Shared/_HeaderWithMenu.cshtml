@@ -1,0 +1,58 @@
+﻿<header ng-controller="mainHeaderController">
+    <div class="container clearfix">
+        <div class="logo">
+            <a href="/" class="clearfix">
+                <span class="app-name">KuuParking</span>
+            </a>
+        </div>
+        <md-menu md-position-mode="target target" md-offset="0 78" class="user-profile">
+            <div class="toolbar" ng-click="$mdOpenMenu($event)">
+                <div class="profile clearfix">
+                    <div class="avatar pull-left" dynamic-background="" background-image="{{userInfo.UserProfile.AvatarImageLocation}}"></div>
+                    <div class="info pull-left">
+                        <div>{{userInfo.UserProfile.LastName}} {{userInfo.UserProfile.FirstName}}</div>
+                        <div class="small-text">{{userInfo.PhoneNumber ? userInfo.PhoneNumber : userInfo.Email}}</div>
+                    </div>
+                    <div class="angle-down pull-right">
+                        <a>
+                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <md-menu-content width="4">
+                <md-menu-item>
+                    <md-button ng-click="goToDashboard()" style="display: block;">
+                        <i class="fa fa-fw fa-dashboard"></i> <span>Quản lý bãi đậu xe</span>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ng-click="goToParkingLot()" style="display: block;">
+                        <i class="fa fa-fw fa-car"></i> <span>Thông tin bãi đậu xe</span>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ng-click="goToReport()" style="display: block;">
+                        <i class="fa fa-fw fa-area-chart"></i> <span>Báo cáo</span>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ng-click="goToProfile()" style="display: block;">
+                        <i class="fa fa-fw fa-info-circle"></i> <span>Thông tin tài khoản</span>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ng-click="goToActivation()" style="display: block;">
+                        <i class="fa fa-fw fa-check-square-o"></i> <span>Kích hoạt tài khoản nhà cung cấp</span>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                    <md-button ng-click="signout()">
+                        <i class="fa fa-fw fa-power-off"></i> <span>Đăng xuất</span>
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+    </div>
+</header>

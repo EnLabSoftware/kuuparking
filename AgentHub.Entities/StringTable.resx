@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountIsAlreadyConfirmedEmail" xml:space="preserve">
+    <value>Tài khoản đã được kích hoạt bằng email trước đây.</value>
+  </data>
+  <data name="AccountRegisterEmailConfirmationBody" xml:space="preserve">
+    <value>Chào {0},&lt;br/&gt;&lt;br/&gt;Để kích hoạt tài khoản của bạn, vui lòng &lt;a href={1}&gt;nhấp chuột vào đây&lt;/a&gt; hoặc mở trình duyệt với liên kết này: {1}&lt;br/&gt;&lt;br/&gt;Trân trọng,&lt;br/&gt;KuuParking Team</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Quận/Huyện</value>
+  </data>
+  <data name="ConfirmPasswordDonotMatch" xml:space="preserve">
+    <value>Mật khẩu không trùng khớp.</value>
+  </data>
+  <data name="ConfirmYourAccount" xml:space="preserve">
+    <value>KuuParking.com: Kích hoạt tài khoản của bạn.</value>
+  </data>
+  <data name="District" xml:space="preserve">
+    <value>Xã/Phường</value>
+  </data>
+  <data name="EmailIsNotFound" xml:space="preserve">
+    <value>Email không hợp lệ.</value>
+  </data>
+  <data name="ErrorCanNotFindTheRecord" xml:space="preserve">
+    <value>Cannot find the record of id: {0}.</value>
+  </data>
+  <data name="ForgotPasswordEmailConfirmationBody" xml:space="preserve">
+    <value>Chào {0},&lt;br/&gt;&lt;br/&gt;Để đặt lại mật khẩu của bạn, vui lòng &lt;a href={1}&gt;nhấp chuột vào đây&lt;/a&gt; hoặc mở trình duyệt với liên kết này: {1}&lt;br/&gt;&lt;br/&gt;Trân trọng,&lt;br/&gt;KuuParking Team</value>
+  </data>
+  <data name="HomePageDescription" xml:space="preserve">
+    <value>KuuParking cho phép tận dụng garage hay không gian trống của bạn làm bãi đậu/đỗ xe ôtô và người dùng dễ dàng tìm kiếm bãi đậu/đỗ xe của bạn theo tên đường, thành phố, hay địa chỉ trên bản đồ trực tuyến (Google map). Người dùng có thể đặt mua và thanh toán trực tuyến vị trí đậu xe mong muốn. KuuParking còn cho phép bạn quản lý việc xe vào/ra tại bãi đậu xe của bạn và quản lý chi tiết doanh thu trên máy tính hay điện thoại thông minh ở bất cứ đâu bạn có kết nối internet.</value>
+  </data>
+  <data name="HomePageTitle" xml:space="preserve">
+    <value>KuuParking - Tìm bãi đậu xe ôtô theo tên đường, thành phố, hay địa chỉ</value>
+  </data>
+  <data name="IncorrectUsernamePassword" xml:space="preserve">
+    <value>Sai tên tài khoản hoặc mật khẩu</value>
+  </data>
+  <data name="NoSlotsLeft" xml:space="preserve">
+    <value>Không còn chỗ đậu xe trống</value>
+  </data>
+  <data name="NotAvaliableSlotFromProvider" xml:space="preserve">
+    <value>Bãi đậu xe {0} không còn chỗ trống</value>
+  </data>
+  <data name="NotSupportedMethod" xml:space="preserve">
+    <value>This method is not supported.</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>Số</value>
+  </data>
+  <data name="ProviderAdminPageDescription" xml:space="preserve">
+    <value>KuuParking cho phép bạn cập nhật thông tin các bãi đậu xe ôtô của bạn, quản lý việc xe vào/ra và báo cáo chi tiết doanh thu của các bãi đậu xe.</value>
+  </data>
+  <data name="ProviderAdminPageTitle" xml:space="preserve">
+    <value>KuuParking - Quản lý bãi đậu xe ôtô của bạn</value>
+  </data>
+  <data name="ProviderIsNotFound" xml:space="preserve">
+    <value>Không tìm thấy bãi đậu xe</value>
+  </data>
+  <data name="ProviderPrivacyStatementPageDescription" xml:space="preserve">
+    <value>Nội dung điều khoản thỏa thuận giữa KuuParking và người cung cấp thông tin bãi đậu xe</value>
+  </data>
+  <data name="ProviderPrivacyStatementPageTitle" xml:space="preserve">
+    <value>KuuParking - Điều khoản thỏa thuận với người cung cấp bãi đậu xe ôtô</value>
+  </data>
+  <data name="ProviderRegisterPageDescription" xml:space="preserve">
+    <value>KuuParking cho phép tận dụng garage hay không gian trống của bạn làm bãi đậu/đỗ xe ôtô. Chỉ cần đăng ký thông tin là bãi đậu xe của bạn có thể được người dùng tìm kiếm theo tên đường, thành phố, hay địa chỉ trên bản đồ trực tuyến/Googlemap. Người dùng có thể đặt mua và thanh toán trực tuyến vị trí đậu xe mong muốn.</value>
+  </data>
+  <data name="ProviderRegisterPageTitle" xml:space="preserve">
+    <value>KuuParking - Đăng ký bãi đậu xe ôtô trên bản đồ tìm kiếm</value>
+  </data>
+  <data name="ProviderSlotsAreEmpty" xml:space="preserve">
+    <value>Bãi đậu xe chưa có chỗ đậu xe.</value>
+  </data>
+  <data name="ResetPasswordRequestIsExpired" xml:space="preserve">
+    <value>Yêu cầu lấy lại mật khẩu không hợp lệ hoặc đã hết hạn.</value>
+  </data>
+  <data name="ResetYourPasswordSubject" xml:space="preserve">
+    <value>KuuParking.com: Cài đặt lại mật khẩu của bạn</value>
+  </data>
+  <data name="SecurityCode" xml:space="preserve">
+    <value>Mã bảo mật</value>
+  </data>
+  <data name="SlotBeingUsed" xml:space="preserve">
+    <value>Chỗ đậu xe đang được sử dụng.</value>
+  </data>
+  <data name="SlotIsNotFound" xml:space="preserve">
+    <value>Không tìm thấy chỗ trống đậu xe</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Tỉnh/Thành</value>
+  </data>
+  <data name="UserNotFoundByEmail" xml:space="preserve">
+    <value>Không tìm thấy người dùng với email/số điện thoại {0}</value>
+  </data>
+  <data name="ValidPasswordPolicy" xml:space="preserve">
+    <value>Mật khẩu có ít nhất 6 ký tự trong đó ít nhất có 1 ký tự in thường từ 'a' - 'z' và có ít nhất một ký tự in hoa từ 'A' - 'Z'.</value>
+  </data>
+  <data name="YourSecurityCodeIs" xml:space="preserve">
+    <value>Mã bảo mật của bạn là: {0}</value>
+  </data>
+</root>

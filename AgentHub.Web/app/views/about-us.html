@@ -1,0 +1,31 @@
+﻿<div class="right-nav-layout loading-wrapper">
+    <div class="loading" ng-show="loading">
+        <div>
+            <md-progress-circular md-mode="indeterminate" ng-disable="!loading" md-diameter="200"></md-progress-circular>
+        </div>
+    </div>
+    <div class="content">
+        <div>
+            <h3>Giới thiệu</h3>
+            <div class="md-padding" style="padding-top: 0;">
+                <p>
+                    KuuParking là ứng dụng trên nền tảng web và điện thoại di động, cho phép bất kỳ ai có garage hay không gian trống dùng làm bãi đậu xe ôtô nhằm tăng thêm thu nhập. Chỉ việc <a href="/bai-dau-xe/dang-ky">đăng ký thông tin với KuuParking</a>, người dùng khắp nơi có thể dễ dàng tìm kiếm bãi đậu xe của bạn theo tên đường, thành phố, hay địa chỉ trên bản đồ trực tuyến (Google map). KuuParking còn cho phép bạn quản lý việc xe vào/ra tại bãi đậu xe của mình trên máy tính hay điện thoại thông minh ở bất cứ đâu bạn có kết nối internet.
+                </p>
+                <p>
+                    <span>Bạn có thắc mắc cần giải đáp? Hãy gửi email cho chúng tôi tại địa chỉ <i class="fa fa-fw fa-envelope-o" aria-hidden="true"></i></span>
+                    <a href="mailto:support@kuuparking.com">support@kuuparking.com</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="right-nav">
+        <div class="place-list">
+            <h3>Bãi đậu xe trên toàn quốc</h3>
+            <md-list>
+                <md-list-item ng-repeat="p in providersInState">
+                    <a ng-href="/bai-dau-xe?stateId={{p.StateID}}">{{p.Name}} ({{p.TotalSlotProviders}})</a>
+                </md-list-item>
+            </md-list>
+        </div>
+    </div>
+</div>

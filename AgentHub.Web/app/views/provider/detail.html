@@ -1,0 +1,157 @@
+﻿<div class="slot-provider-detail">
+    <div class="info md-padding">
+        <div class="text">
+            <div>
+                <h3 style="margin: 0; line-height: 28px;">
+                    <span style="margin-right:10px">{{ slotProvider.Name }}</span>
+                    <div class="fb-share-button" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuuparking.com%2F&amp;src=sdkpreparse">Chia sẻ</a></div>
+                </h3>
+            </div>
+            <div class="address">
+                Địa chỉ: {{ slotProvider.Address.AddressLine }}
+            </div>
+            <div ng-show="slotProvider.AvailableFromTime && slotProvider.AvailableToTime">
+                Giờ mở cửa: {{ slotProvider.AvailableFromTime | date : 'h:mm a' }} - {{ slotProvider.AvailableToTime | date : 'h:mm a' }}
+            </div>
+            <div class="price">
+                <div>
+                    <span>Giá:</span>
+                    <span ng-hide="slotProvider.IsPublic">{{ slotProvider.Price | currency:"":0 }} <sup>₫</sup></span>
+                    <span style="color: #c12171;" ng-show="slotProvider.IsPublic">Miễn phí</span>
+                </div>
+            </div>
+            <div ng-show="slotProvider.Description">
+                <md-input-container style="width: 100%; padding: 0; margin: 15px 0 0 0;">
+                    <label>Mô tả bãi đậu xe</label>
+                    <textarea ng-model="slotProvider.Description" readonly="readonly" style="border: none; color: #2171c1;"></textarea>
+                </md-input-container>
+            </div>
+
+            <div class="icons">
+                <div class="clearfix" ng-show="slotProvider.IsOpen247">
+                    <i class="icon-247"></i>
+                    Mở cửa 24/7
+                </div>
+                <div class="clearfix" ng-show="slotProvider.IsWeekendAvailable">
+                    <i class="icon-weekend"></i>
+                    Mở cửa cuối tuần
+                </div>
+                <div class="clearfix" ng-show="slotProvider.IsCoveredParking">
+                    <i class="icon-covered"></i>
+                    Có mái che
+                </div>
+                <div class="clearfix" ng-show="slotProvider.IsOvernightParking">
+                    <i class="icon-overnight"></i>
+                    Đậu xe qua đêm
+                </div>
+                <div class="clearfix" ng-show="slotProvider.IsBusParking">
+                    <i class="icon-bus"></i>
+                    Đậu được xe bus
+                </div>
+                <div class="clearfix" ng-show="slotProvider.IsCarWashingServiceAvailable">
+                    <i class="icon-carwash"></i>
+                    Có dịch vụ rửa xe
+                </div>
+            </div>
+            <div class="time-table">
+                <table style="width: 100%;" ng-hide="slotProvider.IsOpen247">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Thứ / Giờ</th>
+                            <th style="text-align: left;">Mở cửa</th>
+                            <th style="text-align: left;">Đóng cửa</th>
+                            <th style="text-align: left;">Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-class="{'in-active' : !slotProvider.IsMondayAvailable}">
+                            <td>Thứ Hai</td>
+                            <td>{{slotProvider.MondayOpenTime}}</td>
+                            <td>{{slotProvider.MondayClosedTime}}</td>
+                            <td>
+                                <i class="fa fa-fw fa-low-vision" ng-hide="slotProvider.IsMondayAvailable"></i>
+                                <i class="fa fa-fw fa-check-square-o" ng-show="slotProvider.IsMondayAvailable"></i>
+                            </td>
+                        </tr>
+                        <tr ng-class="{'in-active' : !slotProvider.IsTuesdayAvailable}">
+                            <td>Thứ Ba</td>
+                            <td>{{slotProvider.TuesdayOpenTime}}</td>
+                            <td>{{slotProvider.TuesdayClosedTime}}</td>
+                            <td>
+                                <i class="fa fa-fw fa-low-vision" ng-hide="slotProvider.IsTuesdayAvailable"></i>
+                                <i class="fa fa-fw fa-check-square-o" ng-show="slotProvider.IsTuesdayAvailable"></i>
+                            </td>
+                        </tr>
+                        <tr ng-class="{'in-active' : !slotProvider.IsWednesdayAvailable}">
+                            <td>Thứ Tư</td>
+                            <td>{{slotProvider.WednesdayOpenTime}}</td>
+                            <td>{{slotProvider.WednesdayClosedTime}}</td>
+                            <td>
+                                <i class="fa fa-fw fa-low-vision" ng-hide="slotProvider.IsWednesdayAvailable"></i>
+                                <i class="fa fa-fw fa-check-square-o" ng-show="slotProvider.IsWednesdayAvailable"></i>
+                            </td>
+                        </tr>
+                        <tr ng-class="{'in-active' : !slotProvider.IsThursdayAvailable}">
+                            <td>Thứ Nắm</td>
+                            <td>{{slotProvider.ThursdayOpenTime}}</td>
+                            <td>{{slotProvider.ThursdayClosedTime}}</td>
+                            <td>
+                                <i class="fa fa-fw fa-low-vision" ng-hide="slotProvider.IsThursdayAvailable"></i>
+                                <i class="fa fa-fw fa-check-square-o" ng-show="slotProvider.IsThursdayAvailable"></i>
+                            </td>
+                        </tr>
+                        <tr ng-class="{'in-active' : !slotProvider.IsFridayAvailable}">
+                            <td>Thứ Sáu</td>
+                            <td>{{slotProvider.FridayOpenTime}}</td>
+                            <td>{{slotProvider.FridayClosedTime}}</td>
+                            <td>
+                                <i class="fa fa-fw fa-low-vision" ng-hide="slotProvider.IsFridayAvailable"></i>
+                                <i class="fa fa-fw fa-check-square-o" ng-show="slotProvider.IsFridayAvailable"></i>
+                            </td>
+                        </tr>
+                        <tr ng-class="{'in-active' : !slotProvider.IsSaturdayAvailable}">
+                            <td>Thứ Bảy</td>
+                            <td>{{slotProvider.SaturdayOpenTime}}</td>
+                            <td>{{slotProvider.SaturdayClosedTime}}</td>
+                            <td>
+                                <i class="fa fa-fw fa-low-vision" ng-hide="slotProvider.IsSaturdayAvailable"></i>
+                                <i class="fa fa-fw fa-check-square-o" ng-show="slotProvider.IsSaturdayAvailable"></i>
+                            </td>
+                        </tr>
+                        <tr ng-class="{'in-active' : !slotProvider.IsSundayAvailable}">
+                            <td>Chủ Nhật</td>
+                            <td>{{slotProvider.SundayOpenTime}}</td>
+                            <td>{{slotProvider.SundayClosedTime}}</td>
+                            <td>
+                                <i class="fa fa-fw fa-low-vision" ng-hide="slotProvider.IsSundayAvailable"></i>
+                                <i class="fa fa-fw fa-check-square-o" ng-show="slotProvider.IsSundayAvailable"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-show="slotProvider.Address">
+                <md-button class="md-raised md-primary" ng-href="/bai-dau-xe?stateId={{slotProvider.Address.StateId}}">
+                    <i class="fa fa-fw fa-angle-left"></i>
+                    Quay lại
+                </md-button>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-content">
+            <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.events">
+                <ui-gmap-marker coords="map.currentLocationMarker" options="map.currentLocationMarker.options" idkey="'id'"></ui-gmap-marker>
+                <ui-gmap-marker coords="map.slotProviderMarker" options="map.slotProviderMarker" idkey="'id'"></ui-gmap-marker>
+            </ui-gmap-google-map>
+        </div>
+    </div>
+
+    <div class="images md-padding">
+        <ul style="list-style: none; margin: 0; padding: 0;">
+            <li ng-repeat="slide in slides track by slide.id" style="text-align: center;">
+                <img alt="" ng-src="{{slide.url}}" style="max-width: 96%; margin-bottom: 15px;" />
+            </li>
+        </ul>
+    </div>
+</div>

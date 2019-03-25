@@ -1,0 +1,74 @@
+﻿<div class="provider-dashboard loading-wrapper">
+    <div class="loading" ng-show="slotProviderLoading">
+        <div>
+            <md-progress-circular md-mode="indeterminate" ng-disable="!slotProviderLoading" md-diameter="200"></md-progress-circular>
+        </div>
+    </div>
+
+    <div class="parking-lots">
+        <div ng-repeat="slotProvider in providers">
+            <div class="head clearfix">
+                <div>
+                    <h3>
+                        <md-select ng-model="$parent.selectedSlotProvider" ng-model-options="{trackBy: $value.ID}" aria-label="Chọn bãi đậu xe">
+                            <md-option ng-repeat="item in slotProviders" ng-value="item">{{item.Name}}</md-option>
+                        </md-select>
+                    </h3>
+                </div>
+                <div class="pull-right clearfix">
+                    <div class="picture-taking-switch">
+                        <md-switch ng-model="userInfo.UserProfile.AllowCaptureVehicleIn" ng-change="allowCaptureChange()" aria-label="Chụp hình xe vào" class="md-primary" style="margin: 5px;">
+                            Chụp hình xe vào
+                        </md-switch>
+                    </div>
+                    <div>
+                        <md-button class="md-raised md-primary" ng-click="slotProvider.carMoveToFirstAvailable($event)" aria-label="Xe Vào" style="margin: 0; width: 100px; height: 40px">
+                            <i class="fa fa-bus" style="margin-right: 10px;"></i><span>Xe Vào</span>
+                        </md-button>
+                    </div>
+                    <!--<div class="percent">
+                        <md-progress-linear md-mode="determinate" value="{{slotProvider.parkedPercent()}}"></md-progress-linear>
+                        <span>{{slotProvider.totalParked}}/{{slotProvider.totalSlots}} Xe</span>
+                    </div>-->
+                </div>
+            </div>
+            <div class="content">
+                <ul class="clearfix">
+                    <li ng-repeat="slot in slotProvider.Slots | orderBy:'ID' track by $index " ng-class="{available : slot.IsAvailable}">
+                        <div class="loading-wrapper">
+                            <div class="bar clearfix">
+                                <div class="number">
+                                    <span>{{ $index + 1 }}</span>
+                                </div>
+                                <div class="menu pull-right">
+                                    <md-button class="md-raised" ng-class="{'md-primary': !slot.IsAvailable}" ng-click="slotProvider.reverseStateOfSlot(slot, $event)" aria-label="Xe Vào">
+                                        <span>Xe {{slot.IsAvailable ? 'Vào' : 'Ra'}}</span>
+                                    </md-button>
+                                </div>
+                                <div class="price">{{slot.Price | currency:"":0}}<sup>₫</sup>
+                                </div>
+                            </div>
+                            <!-- File input -->
+                            <div style="display: none;">
+                                <input id="slotProvider-SlotFile-{{slot.ID}}" sp-index="{{$parent.$index}}" slot-index="{{$index}}"
+                                       file-model="slot.imageFile" onchange=" angular.element(this).scope().imageChanged(this) " type="file" accept="image/*" class="hidden"/>
+                            </div>
+                            <div class="picture">
+                                <div ng-show="!slot.IsAvailable" ng-click="viewBookingImage(slot, $event)" dynamic-background="" background-image="{{slot.ActiveBooking.VehicleImageFileName}}"></div>
+                                <span ng-click="browseImage(slot.ID)" ng-show="!slot.IsAvailable">
+                                     <md-tooltip md-direction="bottom">Chụp hình xe</md-tooltip>
+                                </span>
+                            </div>
+                            <div class="loading sm" ng-show="slot.loading">
+                                <div>
+                                    <md-progress-circular md-mode="indeterminate" md-diameter="40px;" class="md-accent md-hue-1">
+                                    </md-progress-circular>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

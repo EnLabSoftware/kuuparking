@@ -1,0 +1,37 @@
+﻿<md-dialog aria-label="Bản Đồ" ng-cloak ng-controller="gmapPickingLocationController" class="google-map-location">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h5 class="two-lines" style="font-weight: normal; margin: 0;">{{title}}</h5>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="hide()">
+                <md-icon aria-label="Đóng hộp thoại">
+                    <i class="fa fa-close"></i>
+                </md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div>
+            <div class="map-template" style="width: 100%; height: 400px;">
+                <script id="searchbox.tpl.html" type="text/ng-template">
+                    <input type="text" placeholder="Tìm kiếm" style="margin-top: 10px; width: 260px; height: 26px;">
+                </script>
+                <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.events" style="width: 100%; height: 400px; display: block;">
+                    <ui-gmap-search-box template="map.searchbox.template" events="map.searchbox.events"></ui-gmap-search-box>
+                    <ui-gmap-marker coords="currentLocation" options="currentLocation.options" events="currentLocation.events" idkey="'id'">
+                    </ui-gmap-marker>
+                </ui-gmap-google-map>
+            </div>
+            <div style="padding: 10px;background-color: #2171c1;color: white;font-size: 12px;">
+                Địa chỉ hiện tại: {{locationResult.formatted_address}}
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-click="hide()">Hủy</md-button>
+        <md-button class="md-primary" ng-click="btnGetLocation_Click(locationResult)" style="margin-right:20px;">
+            Chọn
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

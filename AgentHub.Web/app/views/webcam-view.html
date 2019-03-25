@@ -1,0 +1,42 @@
+﻿<md-dialog aria-label="Chụp ảnh từ Webcam" ng-cloak>
+    <div ng-controller="webcamController">
+        <form>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 style="font-family: serif;">Chụp ảnh từ Webcam</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="hide()">
+                        <md-icon class="fa fa-close" aria-label="Đóng hộp thoại"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <div id="my_camera" style="width: 314px; height: 240px; background-color: #f0f0f0;"></div>
+                    <script language="JavaScript">
+                        Webcam.set({
+                            width: 314,
+                            height: 240,
+                            image_format: 'jpeg',
+                            jpeg_quality: 90
+                        });
+                        Webcam.attach('#my_camera');
+                    </script>
+                    <div style="text-align: center;">
+                        <md-button class="md-raised" ng-click="btnGetImage_Click()">{{btnGetImageText}}</md-button>
+                        <md-button class="md-raised" ng-click="btnSelectImageFromComputer_Click()">Chọn ảnh từ máy</md-button>
+                    </div>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <span flex></span>
+                <md-button ng-click="hide()">
+                    Hủy
+                </md-button>
+                <md-button ng-click="btnDone_Click()" style="margin-right:20px;">
+                    Xong
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </div>
+</md-dialog>

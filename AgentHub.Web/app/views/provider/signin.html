@@ -1,0 +1,54 @@
+﻿<form role="form" class="loading-wrapper">
+    <div class="logo">
+        <a href="/" class="clearfix" style="width:220px;">
+            <img src="/Images/logo-large.png" />
+            <span>KuuParking</span>
+        </a>            
+    </div>
+    <div class="social-buttons">
+        <md-button class="md-raised facebook" ng-click="signInByFaceook_Click()">
+            <i class="fa fa-facebook"></i> <span>Đăng nhập bằng Facebook</span>
+        </md-button>
+
+        <md-button class="md-raised google" ng-click="signInByGoogle_Click()">
+            <i class="fa fa-google-plus"></i> <span>Đăng nhập bằng Google+</span>
+        </md-button>
+    </div>
+
+    <p class="background-line margin-top-xx margin-down-xx">
+        <span>Đăng nhập bằng KuuParking</span>
+    </p>
+
+    <md-input-container class="full-width-input">
+        <input ng-model="user.UserName" required placeholder="Số điện thoại hoặc e-mail">
+    </md-input-container>
+
+    <md-input-container class="full-width-input">
+        <input ng-model="user.Password" required type="password" placeholder="Mật khẩu">
+    </md-input-container>
+
+    <div class="clearfix" style="padding: 15px 0 0 0;">
+        <md-checkbox ng-model="user.IsKeepSignedIn" md-no-ink aria-label="Duy trì đăng nhập" class="pull-left" style="margin: 10px 0 10px 5px;">
+            Duy trì đăng nhập
+        </md-checkbox>
+
+        <md-button class="md-raised md-primary pull-right" data-ng-click="btnSignIn_Click()" style="height: 40px;width: 100px; margin: 0;">
+            Đăng Nhập
+        </md-button>
+    </div>
+
+    <div class="clearfix" style="margin-top: 15px; padding-top: 10px; border-top: solid 1px #2171c1;">
+        <div class="pull-left">
+            <a href="/quen-mat-khau" style=" color:blue;">Bạn quên mật khẩu?</a>
+        </div>
+        <div class="pull-right">
+            <a href="/bai-dau-xe/dang-ky" style="float: right;color:blue;">Bạn chưa có tài khoản?</a>
+        </div>
+    </div>
+
+    <div class="loading" ng-show="loading">
+        <div>
+            <md-progress-circular md-mode='indeterminate' md-diameter="200" style="margin: 0 auto;"></md-progress-circular>
+        </div>
+    </div>
+</form>

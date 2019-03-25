@@ -1,0 +1,287 @@
+﻿<link href="/Content/superfine.css" rel="stylesheet" />
+
+<div class="register">
+    <div class="head">
+        <div class="title-wrapper">
+            <h2>Đưa bãi đậu xe ôtô của bạn lên bản đồ tìm kiếm.</h2>
+            <div>Bằng việc đăng ký một tài khoản và đánh dấu bãi đậu xe của bạn trên bản đồ, khách hàng sẽ dễ dàng tìm kiếm và đặt chỗ đậu xe trực tuyến.</div>
+        </div>
+        <div class="steps loading-wrapper" ng-hide="alreadyRegistered">
+            <div class="loading" ng-show="loading">
+                <div>
+                    <md-progress-circular md-mode="indeterminate" ng-disable="!loading" md-diameter="200"></md-progress-circular>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <div style="margin-bottom: 5px; text-transform: uppercase;">
+                    Bắt đầu mở tài khoản KuuParking
+                </div>
+                <div class="numbers clearfix">
+                    <span class="fa-stack fa-lg" ng-class="{ 'complete' : step >= 1 }" ng-click="step = 1">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                        <span>Thông Tin</span>
+                    </span>
+                    <span class="fa-stack fa-lg" ng-class="{ 'complete' : step >= 2 }" ng-click="step = 2">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-stack-1x fa-inverse" ng-class="gettingAddress ? 'fa-spinner fa-spin' : 'fa-check'"></i>
+                        <span>Vị Trí</span>
+                    </span>
+                    <span class="fa-stack fa-lg" ng-class="{ 'complete' : step >= 3 }" ng-click="step = 3">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                        <span>Hình Ảnh</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Step 1 -->
+            <div ng-show="step == 1">
+                <div class="clearfix inputs">
+                    <md-input-container>
+                        <input ng-model="user.LastName" required placeholder="Họ và tên đệm">
+                    </md-input-container>
+                    <md-input-container class="pull-right">
+                        <input ng-model="user.FirstName" required placeholder="Tên">
+                    </md-input-container>
+                </div>
+
+                <md-input-container>
+                    <input ng-model="user.PhoneNumber" placeholder="Số điện thoại">
+                </md-input-container>
+
+                <md-input-container>
+                    <input ng-model="user.Email" required type="email" placeholder="Địa chỉ e-mail">
+                </md-input-container>
+
+                <md-input-container ng-hide="withGoogle || withFacebook">
+                    <input ng-model="user.Password" required type="password" placeholder="Mật khẩu">
+                </md-input-container>
+
+                <md-input-container ng-hide="withGoogle || withFacebook">
+                    <input ng-model="user.ConfirmPassword" required type="password" placeholder="Nhập lại mật khẩu">
+                </md-input-container>
+
+                <div class="buttons clearfix" style="margin-top: 20px;">
+                    <md-button ng-click="nextStep($event, 1)" class="md-raised md-primary pull-right">
+                        <span>Tiếp theo</span> <i class="fa fa-angle-double-right"></i>
+                    </md-button>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div ng-show="step == 2">
+                <div class="clearfix">
+                    <md-button ng-click="showMap()" class="md-raised md-primary">
+                        <i class="fa fa-map-marker"></i> Chọn vị trí
+                    </md-button>
+                </div>
+
+                <div class="clearfix">
+                    <md-input-container style="width: 28%; float: left;">
+                        <input ng-model="user.StreetNumber" placeholder="Số nhà">
+                    </md-input-container>
+
+                    <md-input-container style="width: 68%; float: left;">
+                        <input ng-model="user.Street" required placeholder="Tên đường">
+                    </md-input-container>
+                </div>
+                
+                <md-input-container>
+                    <label>Mô tả bãi đậu xe</label>
+                    <textarea ng-model="user.Description" md-maxlength="1024" rows="3"></textarea>
+                </md-input-container>
+
+                <div class="inputs clearfix">
+                    <md-input-container>
+                        <label>Quốc gia</label>
+                        <md-select ng-model="user.CountryId">
+                            <md-option ng-repeat="country in countryList" ng-value="country.ID">{{ country.Name }}</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container class="pull-right">
+                        <label>Tỉnh/TP</label>
+                        <md-select ng-model="user.StateId" ng-change="selectionState_Changed(user.StateId, $event)">
+                            <md-option ng-repeat="state in stateList" ng-value="state.ID">{{state.Name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div class="inputs clearfix" style="margin-bottom: 20px;">
+                    <md-input-container>
+                        <label>Quận/Huyện</label>
+                        <md-select ng-model="user.CityId" ng-change="selectionCity_Changed(user.CityId, $event)">
+                            <md-option ng-repeat="city in cityList" ng-value="city.ID">{{city.Name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container class="pull-right">
+                        <label>Xã/Phường</label>
+                        <md-select ng-model="user.DistrictId">
+                            <md-option ng-repeat="district in districtList" ng-value="district.ID">{{district.Name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <md-input-container>
+                    <input ng-model="user.ProviderName" focus-input="focusProviderName" required placeholder="Tên bãi đậu xe">
+                </md-input-container>
+
+                <div class="clearfix">
+                    <md-input-container style="width: 48%; float: left;" ng-class="{highlight: !user.MaximumSlots}">
+                        <input ng-model="user.MaximumSlots" required type="number" placeholder="Số lượng chỗ">
+                    </md-input-container>
+                    <md-input-container style="width: 48%; float: right;" ng-class="{highlight: !user.Price}">
+                        <input ng-model="user.Price" type="number" placeholder="Giá">
+                    </md-input-container>
+                </div>
+
+                <div class="buttons clearfix" style="margin-top: 20px;">
+                    <md-button ng-click="step = 1;" class="md-raised md-primary">
+                        <i class="fa fa-angle-double-left"></i> <span>Quay lại</span>
+                    </md-button>
+                    <md-button ng-click="nextStep($event, 2)" class="md-raised md-primary pull-right">
+                        <span>Tiếp theo</span> <i class="fa fa-angle-double-right"></i>
+                    </md-button>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div ng-show="step == 3">
+                <!-- File input -->
+                <div style="display: none;">
+                    <input id="image-parking-space0" onchange="angular.element(this).scope().imageLocation_Changed(this, 0) "
+                           file-model="locationImage0" type="file" accept="image/*" class="hidden" />
+                    <input id="image-parking-space1" onchange="angular.element(this).scope().imageLocation_Changed(this, 1) "
+                           file-model="locationImage1" type="file" accept="image/*" class="hidden" />
+                    <input id="image-parking-space2" onchange="angular.element(this).scope().imageLocation_Changed(this, 2) "
+                           file-model="locationImage2" type="file" accept="image/*" class="hidden" />
+                </div>
+
+                <div layout="row" class="images">
+                    <div flex="33">
+                        <img ng-src="{{imgSources[0]}}" alt="" ng-click="browseImage($event, 0)" />
+                    </div>
+                    <div flex="33">
+                        <img ng-src="{{imgSources[1]}}" alt="" ng-click="browseImage($event, 1)" />
+                    </div>
+                    <div flex>
+                        <img ng-src="{{imgSources[2]}}" alt="" ng-click="browseImage($event, 2)" />
+                    </div>
+                </div>
+
+                <div>Đánh dấu những tiện nghi của bãi đậu xe</div>
+
+                <!-- Checkboxes -->
+                <div class="checkboxes">
+                    <md-input-container>
+                        <md-checkbox ng-model="user.IsOpen247" md-no-ink aria-label="Mở cửa 24/7" class="md-primary customer-font font-size-13">
+                            Mở cửa 24/7
+                        </md-checkbox>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <md-checkbox ng-model="user.IsOvernightParking" md-no-ink aria-label="Đậu xe qua đêm" class="md-primary customer-font font-size-13">
+                            Đậu xe qua đêm
+                        </md-checkbox>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <md-checkbox ng-model="user.IsWeekendAvailable" md-no-ink aria-label="Mở cửa cuối tuần" class="md-primary customer-font font-size-13">
+                            Mở cửa cuối tuần
+                        </md-checkbox>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <md-checkbox ng-model="user.IsCoveredParking" md-no-ink aria-label="Có mái che" class="md-primary">
+                            Có mái che
+                        </md-checkbox>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <md-checkbox ng-model="user.IsCarWashingServiceAvailable" md-no-ink aria-label="Có dịch vụ rửa xe" class="md-primary customer-font font-size-13">
+                            Có dịch vụ rửa xe
+                        </md-checkbox>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <md-checkbox ng-model="user.IsBusParking" md-no-ink aria-label="Đậu được xe bus" class="md-primary customer-font font-size-13">
+                            Đậu được xe bus
+                        </md-checkbox>
+                    </md-input-container>
+                </div>
+                <div>
+                    <div class="buttons clearfix" style="margin: 20px 0 0 0;">
+                        <md-button ng-click="step = 2;" class="md-raised md-primary">
+                            <i class="fa fa-angle-double-left"></i> <span>Quay lại</span>
+                        </md-button>
+                        <md-button ng-click="register($event)" class="md-raised md-primary pull-right">
+                            <i class="fa fa-check-square-o"></i> <span>Đăng Ký</span>
+                        </md-button>
+                    </div>
+                </div>
+                <div style="margin-top: 10px; font-size: 0.8em;">
+                    <p>
+                        Nhấn vào nút Đăng Ký, tôi đồng ý rằng KuuParking hoặc đại diện của họ có thể sẽ liên lạc với tôi qua điện thoại, thư điện tử, hoặc tin nhắn (kể cả bằng các phương tiện tự động) theo số điện thoại hoặc địa chỉ thư điện tử tôi đã cung cấp, kể cả cho các mục đích tiếp thị. Tôi đã đọc và hiểu <a href="dieu-khoan-ca-nhan" target="_blank">Điều Khoản Cá Nhân</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="steps" ng-show="alreadyRegistered">
+            <div style="margin-bottom: 5px;text-transform: uppercase;text-align: center;padding: 10px 0;">
+                <i class="fa fa-check zomming-animation" style="font-size: 20px;"></i> Mở tài khoản thành công!
+            </div>
+            <div>
+                Một mã kích hoạt đã gửi tới e-mail hoặc số điện thoại của bạn.
+            </div>
+            <br />
+            <div>
+                Nếu bạn vẫn chưa nhận được mã kích hoạt này trong vòng 2 phút, xin nhấn <a href="" ng-click="resentActiveCode">vào đây</a> để gửi lại.
+            </div>
+            <br />
+            <div>
+                Để đảm bảo tài khoản này hoàn toàn thuộc về bạn, xin vui lòng nhập mã kích hoạt vào ô bên dưới.
+            </div>
+            <div>
+                <md-input-container>
+                    <input ng-model="activateCode" required placeholder="Mã kích hoạt">
+                </md-input-container>
+            </div>
+            <div class="buttons clearfix" style="margin: 20px 0 0 0;">
+                <md-button ng-click="activate($event)" class="md-raised md-primary" style="width: 100%;">
+                    <i class="fa fa-rocket" style="margin-right: 5px;"></i>
+                    <span>Kích Hoạt Tài Khoản</span>
+                </md-button>
+            </div>
+        </div>
+    </div>
+
+    <div class="benefit">
+        <ul>
+            <li class="first">
+                <span></span>
+                <h3>Tăng thu nhập thụ động.</h3>
+                <p>
+                    Bạn có không gian đậu xe nhàn rỗi (garage trống hay sân vườn)? KuuParking sẽ giúp bạn biến nó thành phương tiện tăng thu nhập. Bạn đã có tất cả, hãy bắt đầu kiếm tiền!
+                </p>
+            </li>
+            <li class="second">
+                <span></span>
+                <h3>Tăng năng suất bãi đậu xe.</h3>
+                <p>
+                    Với khả năng tìm kiếm và chỉ đường theo vị trí hiện tại, tên đường, thành phố, hoặc địa chỉ, KuuParking giúp khách hàng dễ dàng tìm thấy vị trí bãi đậu xe của bạn từ khắp nơi.
+                </p>
+            </li>
+            <li class="third">
+                <span></span>
+                <h3>Tiện lợi</h3>
+                <p>
+                    KuuParking hỗ trợ công cụ quản lý bãi đậu xe, theo dõi xe ra vào và doanh thu của bạn. Bạn có thể truy cập bất kì khi nào và bất kì ở đâu có kết nối Internet.
+                </p>
+            </li>
+        </ul>
+    </div>
+</div>

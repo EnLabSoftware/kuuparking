@@ -1,0 +1,167 @@
+﻿@{
+    Layout = "~/Views/Shared/_MaterialLayout.cshtml";
+    ViewBag.Title = AgentHub.Service.PageService.CurrentPageItem.Title;
+    ViewBag.PageDescription = AgentHub.Service.PageService.CurrentPageItem.Description;
+    ViewBag.Keywords = AgentHub.Service.PageService.CurrentPageItem.Keywords;
+    ViewBag.OGTitle = AgentHub.Service.PageService.CurrentPageItem.OGTitle;
+    ViewBag.OGDescription = AgentHub.Service.PageService.CurrentPageItem.OGDescription;
+}
+
+
+<link href="/Content/rzslider.css" rel="stylesheet" />
+<script src="/Scripts/angular/rzslider.min.js"></script>
+<script src="/App/home-app.js"></script>
+<script src="/App/services/userService.js"></script>
+<script src="/App/services/providerService.js"></script>
+<script src="/App/controllers/mainFooterController.js"></script>
+
+<div ng-app="home" class="main-page">
+    <section class="header" ng-controller="mainHeaderController" ng-class="{'open-navigation' : isNavigationOpen}">
+        <div class="container clearfix">
+            <div class="logo">
+                <a href="/" class="clearfix">
+                    <span class="app-name">KuuParking</span>
+                </a>
+            </div>
+            <div class="search" ng-class="{'focused' : searchFocused}">
+                <md-input-container class="md-icon-float md-block md-has-icon">
+                    <label>Tìm bãi đậu xe ôtô theo tên đường</label>
+                    <label style="display: none;">Tim bai dau xe oto theo ten duong</label>
+                    <md-icon></md-icon>
+                    <input ng-model="searchTerm" id="autocomplete">
+                    <md-button class="md-icon-button" aria-label="Clear" ng-click="clearSearchTerm();">
+                        <md-icon></md-icon>
+                    </md-button>
+                </md-input-container>
+            </div>
+            <div class="main-toolbar">
+                <div class="menu" ng-hide="userInfo">
+                    <md-button href="/bai-dau-xe/dang-nhap">Đăng Nhập</md-button>
+                    <md-button href="/bai-dau-xe/dang-ky" class="md-raised md-primary">Đăng Ký Bãi Đậu Xe</md-button>
+                </div>
+            </div>
+
+            <button class="c-hamburger c-hamburger--htx sm-hide" ng-class="{'is-active' : isNavigationOpen, 'display-block' : !userInfo}" ng-click="toggleNavigation()">
+                <span>toggle menu</span>
+            </button>
+
+            <div class="profile-content">
+                <md-menu md-position-mode="target target" md-offset="0 78" class="user-profile" ng-show="userInfo">
+                    <div class="toolbar" ng-click="$mdOpenMenu($event)">
+                        <div class="profile clearfix">
+                            <div class="avatar pull-left" dynamic-background="" background-image="{{userInfo.UserProfile.AvatarImageLocation}}"></div>
+                            <div class="info pull-left">
+                                <div>{{userInfo.UserProfile.LastName}} {{userInfo.UserProfile.FirstName}}</div>
+                                <div class="small-text">{{userInfo.PhoneNumber ? userInfo.PhoneNumber : userInfo.Email}}</div>
+                            </div>
+                            <div class="angle-down pull-right">
+                                <a>
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="goToDashboard()" style="display: block;">
+                                <i class="fa fa-fw fa-dashboard"></i> <span>Quản lý bãi đậu xe</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="goToParkingLot()" style="display: block;">
+                                <i class="fa fa-fw fa-car"></i> <span>Thông tin bãi đậu xe</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="goToReport()" style="display: block;">
+                                <i class="fa fa-fw fa-area-chart"></i> <span>Báo cáo</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="goToProfile()" style="display: block;">
+                                <i class="fa fa-fw fa-info-circle"></i> <span>Thông tin tài khoản</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="goToActivation()" style="display: block;">
+                                <i class="fa fa-fw fa-check-square-o"></i> <span>Kích hoạt tài khoản nhà cung cấp</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ng-click="signout()">
+                                <i class="fa fa-fw fa-power-off"></i> <span>Đăng xuất</span>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+
+        <div class="mark" ng-show="isNavigationOpen" ng-click="isNavigationOpen = false;"></div>
+        <section class="left-navigation">
+            <div class="menu-content">
+                <a>
+                    <span class="app-name" ng-click="isNavigationOpen = false;">KuuParking</span>
+                </a>
+                <div ng-hide="userInfo">
+                    <md-button href="/bai-dau-xe/dang-nhap">Đăng Nhập</md-button>
+                </div>
+                <div ng-hide="userInfo">
+                    <md-button href="/bai-dau-xe/dang-ky">Đăng Ký Bãi Đậu Xe</md-button>
+                </div>
+                <div ng-show="userInfo">
+                    <md-button ng-click="goToDashboard()">
+                        <i class="fa fa-fw fa-dashboard"></i> <span>Quản lý bãi đậu xe</span>
+                    </md-button>
+                </div>
+                <div ng-show="userInfo">
+                    <md-button ng-click="goToParkingLot()">
+                        <i class="fa fa-fw fa-car"></i> <span>Thông tin bãi đậu xe</span>
+                    </md-button>
+                </div>
+                <div ng-show="userInfo">
+                    <md-button ng-click="goToReport()">
+                        <i class="fa fa-fw fa-area-chart"></i> <span>Báo cáo</span>
+                    </md-button>
+                </div>
+                <div ng-show="userInfo">
+                    <md-button ng-click="goToProfile()">
+                        <i class="fa fa-fw fa-fw fa-info-circle"></i> <span>Thông tin tài khoản</span>
+                    </md-button>
+                </div>
+                <div ng-show="userInfo">
+                    <md-button ng-click="signout()">
+                        <i class="fa fa-fw fa-power-off"></i> <span>Đăng xuất</span>
+                    </md-button>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <section class="body">
+        <div ui-view style="min-height: 100%;"></div>
+    </section>
+
+    <footer ng-controller="mainFooterController">
+        <table cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td class="support" style="font-size: 12px;line-height: 19px;">
+                        <span>Bạn có thắc mắc? Hãy gửi email cho chúng tôi tại địa chỉ <i class="fa fa-fw fa-envelope-o" aria-hidden="true"></i></span>
+                        <a href="mailto:support@kuuparking.com">support@kuuparking.com</a>
+                    </td>
+                    <td class="btn-faq" style="display: none;">
+                       <md-button href="/cau-hoi-thuong-gap">Trợ Giúp</md-button> 
+                    </td>
+                    <td class="btn-aboutus">
+                        <md-button ng-href="/gioi-thieu">Giới Thiệu</md-button>
+                    </td>
+                    <td>
+                        <div class="fb-share-button" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuuparking.com%2F&amp;src=sdkpreparse">Chia sẻ</a></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </footer>
+</div>

@@ -1,0 +1,6 @@
+﻿CREATE TABLE [Cities]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [CountryId] INT NULL, 
+    [Name] NVARCHAR(250) NULL
+)

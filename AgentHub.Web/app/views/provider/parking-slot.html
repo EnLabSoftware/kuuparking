@@ -1,0 +1,399 @@
+﻿<div class="provider-parking-lot loading-wrapper">
+    <div class="loading" ng-show="slotProviderLoading">
+        <div>
+            <md-progress-circular md-mode="indeterminate" ng-disable="!slotProviderLoading" md-diameter="200"></md-progress-circular>
+        </div>
+    </div>
+
+    <div class="parking-lots">
+        <div ng-repeat="slotProvider in providers" class="loading-wrapper">
+            <div class="head clearfix">
+                <div>
+                    <h3>
+                        <md-select ng-model="$parent.selectedSlotProvider" ng-model-options="{trackBy: $value.ID}" aria-label="Chọn bãi đậu xe">
+                            <md-option ng-repeat="item in slotProviders" ng-value="item">{{item.Name}}</md-option>
+                        </md-select>
+                    </h3>
+                </div>
+                <div class="adding-slot-provider clearfix pull-right">
+                    <div class="">
+                        <md-button ng-click="addSlotProvider()" style="cursor:auto;">
+                            <i class="fa fa-fw fa-plus-circle"></i> <span>Thêm Bãi Đậu Xe</span>
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+            <div class="content clearfix">
+                <div class="clearfix">
+                    <!-- Map -->
+                    <div class="map-content">
+                        <ui-gmap-google-map center='slotProvider.map.center' zoom='slotProvider.map.zoom' events="slotProvider.map.events">
+                            <ui-gmap-search-box template="slotProvider.map.searchbox.template" events="slotProvider.map.searchbox.events">
+                            </ui-gmap-search-box>
+                            <ui-gmap-marker coords="slotProvider.map.currentLocation"
+                                            options="slotProvider.map.currentLocation.options"
+                                            events="slotProvider.map.currentLocation.events" idkey="'id'">
+                            </ui-gmap-marker>
+                        </ui-gmap-google-map>
+                    </div>
+
+                    <div class="address">
+                        <h3>Địa chỉ</h3>
+                        <div class="inputs-content clearfix">
+                            <md-input-container style="width: 28%;">
+                                <input ng-model="slotProvider.Address.StreetNumber" ng-change="streetNumberChanged(slotProvider)" placeholder="Số nhà">
+                            </md-input-container>
+                            <md-input-container style="width: 68%;">
+                                <input ng-model="slotProvider.Address.Street" ng-change="streetChanged(slotProvider)" required placeholder="Tên đường">
+                            </md-input-container>
+                        </div>
+
+                        <div class="inputs-content clearfix">
+                            <md-input-container style="width: 100%; margin-left: 0;">
+                                <label>Mô tả bãi đậu xe</label>
+                                <textarea ng-model="slotProvider.Description" md-maxlength="1024" rows="3"></textarea>
+                            </md-input-container>
+                        </div>
+
+                        <div class="inputs-content clearfix">
+                            <md-input-container>
+                                <label>Quốc gia</label>
+                                <md-select ng-model="slotProvider.Address.CountryId" ng-change="countryChanged(slotProvider)">
+                                    <md-option ng-repeat="country in countryList" ng-value="country.ID">{{ country.Name }}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container>
+                                <label>Tỉnh/TP</label>
+                                <md-select ng-model="slotProvider.Address.StateId" ng-change="stateChanged(slotProvider)">
+                                    <md-option ng-repeat="state in stateList" ng-value="state.ID">{{state.Name}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+
+                        <div class="inputs-content clearfix">
+                            <md-input-container>
+                                <label>Quận/Huyện</label>
+                                <md-select ng-model="slotProvider.Address.CityId" ng-change="cityChanged(slotProvider)">
+                                    <md-option ng-repeat="city in slotProvider.cityList" ng-value="city.ID">{{city.Name}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container>
+                                <label>Xã/Phường</label>
+                                <md-select ng-model="slotProvider.Address.DistrictId" ng-change="districtChanged(slotProvider)">
+                                    <md-option ng-repeat="district in slotProvider.districtList" ng-value="district.ID">{{district.Name}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+
+                        <div class="inputs-content clearfix">
+                            <md-input-container style="width: 100%; margin-left: 0;">
+                                <input ng-model="slotProvider.Name" required placeholder="Tên bãi đậu xe">
+                            </md-input-container>
+                        </div>
+
+                        <div class="inputs-content clearfix">
+                            <mdp-time-picker mdp-auto-switch="true" required ng-model="slotProvider.AvailableFromTime" mdp-placeholder="Giờ mở cửa"></mdp-time-picker>
+                            <mdp-time-picker mdp-auto-switch="true" required ng-model="slotProvider.AvailableToTime" mdp-placeholder="Giờ đóng cửa"></mdp-time-picker>
+                        </div>
+
+                        <div class="inputs-content clearfix">
+                            <md-input-container>
+                                <input ng-model="slotProvider.MaximumSlots" ng-disabled="slotProvider.ID" required type="number" placeholder="Số lượng chỗ">
+                            </md-input-container>
+                            <md-input-container>
+                                <input ng-model="slotProvider.Price" type="number" placeholder="Giá">
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix">
+                    <!-- Convenients & Images -->
+                    <div class="left-panel">
+                        <!-- Hình ảnh -->
+                        <div class="images clearfix">
+                            <h3>Hình ảnh</h3>
+                            <div style="display: none;">
+                                <input id="slotProviderFile{{slotProvider.ID}}-0" sp-id="{{slotProvider.ID}}" file-model="slotProvider.imageFiles0" onchange=" angular.element(this).scope().imageChanged(this, 0) " type="file" accept="image/*" class="hidden" />
+                                <input id="slotProviderFile{{slotProvider.ID}}-1" sp-id="{{slotProvider.ID}}" file-model="slotProvider.imageFiles1" onchange=" angular.element(this).scope().imageChanged(this, 1) " type="file" accept="image/*" class="hidden" />
+                                <input id="slotProviderFile{{slotProvider.ID}}-2" sp-id="{{slotProvider.ID}}" file-model="slotProvider.imageFiles2" onchange=" angular.element(this).scope().imageChanged(this, 2) " type="file" accept="image/*" class="hidden" />
+                            </div>
+                            <div>
+                                <img ng-src="{{slotProvider.Base64Image1 || slotProvider.ImageLocation1}}" alt="" ng-click="browseImage($index, 0)" />
+                            </div>
+                            <div>
+                                <img ng-src="{{slotProvider.Base64Image2 || slotProvider.ImageLocation2}}" alt="" ng-click="browseImage($index, 1)" />
+                            </div>
+                            <div>
+                                <img ng-src="{{slotProvider.Base64Image3 || slotProvider.ImageLocation3}}" alt="" ng-click="browseImage($index, 2)" />
+                            </div>
+                        </div>
+
+                        <!-- Giờ đậu xe -->
+                        <table style="width: 100%;" class="opening-time-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">
+                                        <h3 style="margin: 0 0 10px 0; font-weight: normal;">Giờ đậu xe</h3>
+                                    </th>
+                                    <th style="text-align: left;">Mở cửa</th>
+                                    <th style="text-align: left;">Đóng cửa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <md-switch ng-model="slotProvider.IsMondayAvailable" aria-label="Thứ Hai" class="md-primary">
+                                            Thứ Hai
+                                        </md-switch>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.MondayOpenTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsMondayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.MondayClosedTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsMondayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <md-switch ng-model="slotProvider.IsTuesdayAvailable" aria-label="Thứ Hai" class="md-primary">
+                                            Thứ Ba
+                                        </md-switch>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.TuesdayOpenTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsTuesdayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.TuesdayClosedTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsTuesdayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <md-switch ng-model="slotProvider.IsWednesdayAvailable" aria-label="Thứ Hai" class="md-primary">
+                                            Thứ Tư
+                                        </md-switch>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.WednesdayOpenTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsWednesdayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.WednesdayClosedTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsWednesdayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <md-switch ng-model="slotProvider.IsThursdayAvailable" aria-label="Thứ Hai" class="md-primary">
+                                            Thứ Năm
+                                        </md-switch>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.ThursdayOpenTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsThursdayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.ThursdayClosedTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsThursdayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <md-switch ng-model="slotProvider.IsFridayAvailable" aria-label="Thứ Hai" class="md-primary">
+                                            Thứ Sáu
+                                        </md-switch>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.FridayOpenTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsFridayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.FridayClosedTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsFridayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <md-switch ng-model="slotProvider.IsSaturdayAvailable" aria-label="Thứ Hai" class="md-primary">
+                                            Thứ Bảy
+                                        </md-switch>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.SaturdayOpenTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsSaturdayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.SaturdayClosedTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsSaturdayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <md-switch ng-model="slotProvider.IsSundayAvailable" aria-label="Thứ Hai" class="md-primary">
+                                            Chủ Nhật
+                                        </md-switch>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.SundayOpenTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsSundayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="slotProvider.SundayClosedTime" aria-label="Chọn giờ">
+                                            <md-option ng-repeat="hour in $parent.hours" value="{{hour}}" ng-disabled="!slotProvider.IsSundayAvailable">
+                                                {{hour}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="info">
+                        <!-- Bảng Giá -->
+                        <h3 style="margin-bottom: 5px;">Bảng giá</h3>
+                        <div class="slots clearfix">
+                            <div ng-repeat="slot in slotProvider.Slots" class="slot-wrapper">
+                                <div>
+                                    <div class="title clearfix">
+                                        <span class="pull-left">{{$index + 1}}</span>
+                                        <md-button class="md-icon-button pull-right" ng-click="slotProvider.removeSlot(slot, $index + 1, $event)" aria-label="Xóa">
+                                            <md-tooltip md-direction="top">Xóa chỗ đậu xe</md-tooltip>
+                                            <md-icon aria-label="Xóa">
+                                                <i class="fa fa-close"></i>
+                                            </md-icon>
+                                        </md-button>
+                                    </div>
+                                    <div class="price">
+                                        <input type="text" ng-model="slot.Price" ng-required="true" fcsa-number="{ maxDecimals: 0, append: ' ₫' }" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slot-wrapper">
+                                <div>
+                                    <md-button class="" ng-click="slotProvider.addSlot()" aria-label="Thêm chỗ đậu xe">
+                                        <md-tooltip md-direction="bottom">Thêm chỗ đậu xe</md-tooltip>
+                                        <i class="fa fa-plus"></i>
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tiện nghi -->
+                        <h3 style="margin-bottom: 3px;">Tiện nghi</h3>
+                        <div>
+                            <div class="inputs-content check-boxes clearfix">
+                                <md-input-container>
+                                    <md-checkbox ng-model="slotProvider.IsOpen247" md-no-ink aria-label="Mở cửa 24/7" class="md-primary customer-font font-size-13">
+                                        Mở cửa 24/7
+                                    </md-checkbox>
+                                </md-input-container>
+                                <md-input-container>
+                                    <md-checkbox ng-model="slotProvider.IsOvernightParking" md-no-ink aria-label="Đậu xe qua đêm" class="md-primary customer-font font-size-13">
+                                        Đậu xe qua đêm
+                                    </md-checkbox>
+                                </md-input-container>
+                            </div>
+                            <div class="inputs-content check-boxes clearfix">
+                                <md-input-container>
+                                    <md-checkbox ng-model="slotProvider.IsWeekendAvailable" md-no-ink aria-label="Mở cửa cuối tuần" class="md-primary customer-font font-size-13">
+                                        Mở cửa cuối tuần
+                                    </md-checkbox>
+                                </md-input-container>
+                                <md-input-container>
+                                    <md-checkbox ng-model="slotProvider.IsCoveredParking" md-no-ink aria-label="Có mái che" class="md-primary">
+                                        Có mái che
+                                    </md-checkbox>
+                                </md-input-container>
+                            </div>
+                            <div class="inputs-content check-boxes clearfix">
+                                <md-input-container>
+                                    <md-checkbox ng-model="slotProvider.IsCarWashingServiceAvailable" md-no-ink aria-label="Có dịch vụ rửa xe" class="md-primary customer-font font-size-13">
+                                        Có dịch vụ rửa xe
+                                    </md-checkbox>
+                                </md-input-container>
+                                <md-input-container>
+                                    <md-checkbox ng-model="slotProvider.IsBusParking" md-no-ink aria-label="Đậu được xe bus" class="md-primary customer-font font-size-13">
+                                        Đậu được xe bus
+                                    </md-checkbox>
+                                </md-input-container>
+                            </div>
+                        </div>
+
+                        <!-- Bãi đậu xe công cộng -->
+                        <div>
+                            <md-switch ng-model="slotProvider.IsPublic" aria-label="Bãi đậu xe công cộng" class="md-primary">
+                                <h3 style="font-weight: normal;">Bãi đậu xe công cộng</h3>
+                            </md-switch>
+                        </div>
+
+                        <!-- Save -->
+                        <div class="clearfix" style="margin-top: 10px;">
+                            <md-button ng-show="$parent.slotProviders.length > 1" ng-click="deleteSlotProvider(slotProvider, $event)" class="md-raised md-warn pull-left">
+                                <i class="fa fa-close" style="margin-right: 10px;"></i> <span>Xóa</span>
+                            </md-button>
+                            <md-button ng-click="saveSlotProvider(slotProvider)" class="md-raised md-primary pull-right">
+                                <i class="fa fa-floppy-o" style="margin-right: 10px;"></i> <span>Lưu</span>
+                            </md-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading panel -->
+            <div class="loading" ng-show="slotProvider.saving">
+                <div>
+                    <md-progress-circular md-mode="indeterminate" ng-disable="!slotProvider.saving" md-diameter="200"></md-progress-circular>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="parking-lot-searchbox" type="text/ng-template">
+    <input type="text" placeholder="Tìm kiếm địa điểm" class="gmap-searching-input">
+</script>

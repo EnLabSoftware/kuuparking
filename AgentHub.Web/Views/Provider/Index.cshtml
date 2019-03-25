@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "~/Views/Shared/_MaterialLayout.cshtml";
+    ViewBag.Title = AgentHub.Service.PageService.CurrentPageItem.Title;
+    ViewBag.PageDescription = AgentHub.Service.PageService.CurrentPageItem.Description;
+    ViewBag.Keywords = AgentHub.Service.PageService.CurrentPageItem.Keywords;
+    ViewBag.OGTitle = AgentHub.Service.PageService.CurrentPageItem.OGTitle;
+    ViewBag.OGDescription = AgentHub.Service.PageService.CurrentPageItem.OGDescription;
+}
+
+<script src="/App/provider-app.js"></script>
+<script src="/App/services/userService.js"></script>
+<script src="/App/services/providerService.js"></script>
+<script src="/App/services/googleMapService.js"></script>
+<script src="/App/controllers/provider/controller.js"></script>
+<script src="/App/controllers/provider/dashboardController.js"></script>
+<script src="/App/controllers/provider/parkingSlotController.js"></script>
+<script src="/App/controllers/provider/chartsController.js"></script>
+<script src="/App/controllers/provider/profileController.js"></script>
+
+<div ng-app="provider" class="kuu-layout has-header has-nav-menu has-footer" ng-controller="providerController">
+    @Html.Partial("_HeaderWithMenu")
+    
+    <section class="nav-menu">
+        <div class="menu">
+            <ul>
+                <li ng-class="{active: currentState == 'provider'}">
+                    <a href="#/">
+                        <i class="fa fa-dashboard"></i> <span>Quản lý bãi đậu xe</span>
+                    </a>
+                </li>
+                <li ng-class="{active: currentState == 'parkinglot'}">
+                    <a href="#/thong-tin-bai-dau-xe">
+                        <i class="fa fa-car"></i> <span>Thông tin bãi đậu xe</span>
+                    </a>
+                </li>
+                <li ng-class="{active: currentState == 'charts'}">
+                    <a href="#/bao-cao">
+                        <i class="fa fa-area-chart"></i> <span>Báo cáo</span>
+                    </a>
+                </li>
+                <li ng-class="{active: currentState == 'profile'}">
+                    <a href="#/thong-tin-tai-khoan">
+                        <i class="fa fa-info-circle"></i> <span>Thông tin tài khoản</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="body">
+        <div ui-view style="min-height: 100%;"></div>
+    </section>
+
+    @Html.Partial("_Footer")
+</div>

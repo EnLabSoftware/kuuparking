@@ -1,0 +1,47 @@
+﻿<div class="provider-profile">
+    <div class="profile loading-wrapper">
+        <div class="clearfix">
+            <!-- File input -->
+            <div style="display: none;">
+                <input id="provider-avatar-image{{userInfo.UserProfileId}}" file-model="avatarImageFile" onchange=" angular.element(this).scope().imageChanged(this) " type="file" accept="image/*" class="hidden"/>
+            </div>
+            <div class="avatar" ng-click="browseImage()" dynamic-background="" background-image="{{userInfo.UserProfile.AvatarImageLocation}}">
+                    <md-tooltip md-direction="bottom">Thay đổi hình đại diện</md-tooltip>
+            </div>
+            <div class="info">
+                <div class="inputs-content clearfix">
+                        <md-input-container style="width: 58%;">
+                            <input ng-model="userInfo.UserProfile.LastName" required placeholder="Họ và tên đệm">
+                        </md-input-container>
+                        <md-input-container class="pull-right" style="width: 38%;">
+                            <input ng-model="userInfo.UserProfile.FirstName" required placeholder="Tên">
+                        </md-input-container>
+                    </div>
+
+                    <div class="inputs-content clearfix">
+                        <md-input-container style="width: 100%; margin-left: 0;">
+                            <input ng-model="userInfo.PhoneNumber" placeholder="Số điện thoại">
+                        </md-input-container>
+                    </div>
+
+                    <div class="inputs-content clearfix">
+                        <md-input-container style="width: 100%; margin-left: 0;">
+                            <input ng-model="userInfo.Email" required type="email" placeholder="Địa chỉ e-mail">
+                        </md-input-container>
+                    </div>
+            </div>
+        </div>
+
+        <div class="clearfix" style="margin-top: 10px;">
+            <md-button ng-click="saveProfile()" class="md-raised md-primary pull-right">
+                <i class="fa fa-floppy-o" style="margin-right: 10px;"></i> <span>Lưu</span>
+            </md-button>
+        </div>
+
+        <div class="loading" ng-show="loading">
+            <div>
+                <md-progress-circular md-mode='indeterminate' md-diameter="200" style="margin: 0 auto;"></md-progress-circular>
+            </div>
+        </div>
+    </div>
+</div>

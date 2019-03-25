@@ -1,0 +1,140 @@
+﻿<div ng-controller="homeController" class="home-view">
+    <div class="filter">
+        <div>
+            <rzslider rz-slider-model="slider.value" rz-slider-options="slider.options" style="margin: 30px 0 12px 0;"></rzslider>
+            <!--<div class="text-3d">Bán kính {{Radius}} km</div>-->
+            <!--<md-slider md-discrete ng-model="Radius" min="1" max="50" step="1" aria-label="Bán kính" class="md-primary radius-slider"></md-slider>-->
+        </div>
+        <div layout="row">
+            <div flex="40">
+                <md-input-container md-no-float="true" class="md-block">
+                    <label>Sắp xếp theo</label>
+                    <md-select ng-model="sortBy" ng-model-options="{trackBy: '$value.id'}">
+                        <md-option ng-value="item" ng-repeat="item in sortList">{{ item.text }}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div flex>
+                <md-input-container md-no-float="true" class="md-block filter-by">
+                    <label>Lọc theo</label>
+                    <md-select ng-model="filterByItems" multiple>
+                        <md-tooltip md-direction="top">{{getSelectedFilters()}}</md-tooltip>
+                        <md-option ng-value="item" ng-repeat="item in filterList">{{ item.text }}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div flex="15" class="list-map-toggle">
+                <div ng-click="showList = !showList;">
+                    <i class="fa fa-list" aria-hidden="true" ng-hide="showList"></i>
+                    <i class="map-icon" aria-hidden="true" ng-show="showList"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="locations" ng-class="{'hide-list' : !showList}">
+        <md-progress-circular md-mode='indeterminate' ng-show="loading" md-diameter="100"></md-progress-circular>
+        <md-list ng-show="!loading && map.markers && map.markers.length > 0" class="smooth-scroll">
+            <md-list-item ng-repeat="marker in map.markers"
+                          ng-click="directTo(marker)"
+                          ng-class="{ hovered : marker.hovered, 'public' : marker.provider.IsPublic }"
+                          ng-mouseover="marker.events.mouseover($event, 'mouseover', marker)"
+                          ng-mouseleave="marker.events.mouseout($event, 'mouseout', marker)">
+                <table cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                            <div class="image" ng-class="{'no-image-bg': marker.provider.ThumbnailImageLocation }">
+                                <!--<div dynamic-background="" background-image="{{marker.provider.ThumbnailImageLocation}}"></div>-->
+                                <img alt="" ng-src="{{marker.provider.ThumbnailImageLocation ? marker.provider.ThumbnailImageLocation : '/Images/image-not-found.png'}}" 
+                                     onerror="this.src = '/Images/image-not-found.png'; this.onerror = '';" />
+                            </div>
+                        </td>
+                        <td style="width: 100%;">
+                            <div class="info">
+                                <div class="address">{{ marker.provider.Name }}</div>
+                                <div class="clearfix">
+                                    <div class="distance">
+                                        {{ marker.distance.text }} - {{ marker.duration.text }}
+                                    </div>
+                                    <div class="price">
+                                        <div ng-show="marker.provider.IsPublic" style="font-size: 13px; color: #c12171;">
+                                            Miễn phí
+                                            <md-tooltip md-direction="top">Bãi đậu xe công cộng</md-tooltip>
+                                        </div>
+                                        <div ng-hide="marker.provider.IsPublic">
+                                            {{ marker.provider.Price | currency:"":0 }} <sup>₫</sup>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix current-direction-wrapper" ng-show="!marker.direction && !marker.provider.AvailableFromTime? true : marker.direction">
+                                    <div class="pull-left" ng-show="marker.direction">
+                                        <i class="" ng-class="marker.provider.IsPublic ? 'icon-pin-direction2' : 'icon-pin-direction'"></i>
+                                        <div class="pull-left">
+                                            {{ marker.direction.distance.text }} - {{ marker.direction.duration.text }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="marker.provider.AvailableFromTime" style="font-size: 13px;">
+                                    Giờ mở cửa: {{marker.provider.AvailableFromTime | date : "HH:mm"}} -  {{marker.provider.AvailableToTime | date : "HH:mm"}}
+                                </div>
+                                <div class="icons">
+                                    <i class="icon-247" ng-show="marker.provider.IsOpen247">
+                                        <md-tooltip md-direction="top">Mở cửa 24/7</md-tooltip>
+                                    </i>
+                                    <i class="icon-weekend" ng-show="marker.provider.IsWeekendAvailable">
+                                        <md-tooltip md-direction="top">Mở cửa cuối tuần</md-tooltip>
+                                    </i>
+                                    <i class="icon-covered" ng-show="marker.provider.IsCoveredParking">
+                                        <md-tooltip md-direction="top">Có mái che</md-tooltip>
+                                    </i>
+                                    <i class="icon-overnight" ng-show="marker.provider.IsOvernightParking">
+                                        <md-tooltip md-direction="top">Đậu xe qua đêm</md-tooltip>
+                                    </i>
+                                    <i class="icon-bus" ng-show="marker.provider.IsBusParking">
+                                        <md-tooltip md-direction="top">Đậu được xe bus</md-tooltip>
+                                    </i>
+                                    <i class="icon-carwash" ng-show="marker.provider.IsCarWashingServiceAvailable">
+                                        <md-tooltip md-direction="top">Có dịch vụ rửa xe</md-tooltip>
+                                    </i>
+                                    <span class=" button-detail-wrapper">
+                                        <md-button class="md-button md-primary" aria-label="Settings" style="color: #0000EE;"
+                                                   ng-click="showProviderDetailPopup(marker); $event.stopPropagation();">
+                                            <md-tooltip md-direction="top">Nhấp chuột vào để xem chi tiết</md-tooltip>
+                                            Chi tiết
+                                        </md-button>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </md-list-item>
+        </md-list>
+
+        <div class="slot-not-found" ng-hide="loading || (map.markers && map.markers.length > 0)">
+            <div>Chúng tôi không tìm thấy bãi đậu xe nào quanh vị trí hiện tại.</div>
+            <div>
+                Bạn có thể <a href="bai-dau-xe/dang-ky">đăng ký</a> bãi đậu xe của chính bạn.
+            </div>
+        </div>
+    </div>
+
+    <div class="map">
+        <div class="current-location" ng-click="moveToCurrentLocation()" ng-class="{'hide-map' : showList}">
+            <md-tooltip md-direction="bottom">Quay về vị trí hiện tại</md-tooltip>
+        </div>
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.events">
+            <ui-gmap-markers models="map.markers" coords="'self'" icon="'icon'" idkey="'id'" click="onMarkerClicked"
+                             docluster="map.doClusterMarkers" clusteroptions="map.clusterOptions" modelsbyref="true">
+            </ui-gmap-markers>
+
+            <ui-gmap-marker coords="currentLocation" options="currentLocation.options" idkey="'id'"></ui-gmap-marker>
+
+            <ui-gmap-marker coords="searchingLocation" options="searchingLocation.options" idkey="'id'" events="searchingLocation.events">
+                <ui-gmap-window ng-cloak coords="searchingLocation" isiconvisibleonclick="true" options="searchingLocation.infoWindow.options">
+                    <p>Vị trí bạn đang tìm kiếm:</p>
+                </ui-gmap-window>
+            </ui-gmap-marker>
+        </ui-gmap-google-map>
+    </div>
+</div>

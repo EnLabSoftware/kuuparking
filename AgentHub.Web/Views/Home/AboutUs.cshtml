@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "~/Views/Shared/_MaterialLayout.cshtml";
+    ViewBag.Title = AgentHub.Service.PageService.CurrentPageItem.Title;
+    ViewBag.PageDescription = AgentHub.Service.PageService.CurrentPageItem.Description;
+    ViewBag.Keywords = AgentHub.Service.PageService.CurrentPageItem.Keywords;
+    ViewBag.OGTitle = AgentHub.Service.PageService.CurrentPageItem.OGTitle;
+    ViewBag.OGDescription = AgentHub.Service.PageService.CurrentPageItem.OGDescription;
+}
+
+<script src="/App/about-app.js"></script>
+<script src="/App/services/providerService.js"></script>
+<script src="/App/controllers/aboutUsController.js"></script>
+
+<div ng-app="about" class="kuu-layout has-header has-footer">
+    <header>
+        <div class="container clearfix">
+            <div class="logo">
+                <a href="/" class="clearfix">
+                    <span class="app-name">KuuParking</span>
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <section class="body">
+        <div ui-view style="min-height: 100%;"></div>
+    </section>
+
+    @Html.Partial("_Footer")
+</div>

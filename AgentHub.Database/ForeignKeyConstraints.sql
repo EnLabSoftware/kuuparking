@@ -1,0 +1,11 @@
+﻿ALTER TABLE Cities
+	ADD CONSTRAINT City_Country
+	FOREIGN KEY ([CountryId])
+	REFERENCES Countries (Id)
+GO;
+
+ALTER TABLE Slots
+	ADD CONSTRAINT Slot_City
+	FOREIGN KEY ([CityId])
+	REFERENCES Cities (Id)
+GO;
